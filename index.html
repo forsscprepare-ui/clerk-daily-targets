@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repository Pages Index</title>
+    <title>Daily Targets</title>
     <style>
         /* CSS Variables for Dynamic Themes */
         :root {
@@ -219,7 +219,7 @@
                 return;
             }
 
-            document.getElementById('repo-title').textContent = `${repoName.replace(/-/g, ' ')} Pages`;
+           document.getElementById('repo-title').textContent = "Daily Targets";
 
             const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents`;
 
