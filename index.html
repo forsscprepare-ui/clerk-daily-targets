@@ -46,10 +46,10 @@
         header {
             margin-bottom: 2.5rem;
             text-align: center;
-            padding-top: 1rem;
+            padding-top: 3.5rem; /* Pushes content down cleanly below top buttons */
         }
 
-        /* Top Left Back Button Alignment Fix */
+        /* Top Left Back Button Styling */
         .back--btn {
             position: absolute;
             top: 0;
@@ -172,9 +172,10 @@
     <div class="container">
 
         <a href="https://officialappaarav-spec.github.io/Banking-Mains/" class="back--btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                <span>Back</span>
-            </a>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            <span>Back</span>
+        </a>
+
         <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme">
             <span id="theme-icon">🌙</span>
             <span id="theme-text">Dark Mode</span>
@@ -199,7 +200,6 @@
             const themeIcon = document.getElementById('theme-icon');
             const themeText = document.getElementById('theme-text');
             
-            // Look for saved preference, otherwise default to light mode
             const currentTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', currentTheme);
             updateThemeUI(currentTheme);
@@ -245,9 +245,6 @@
                 return;
             }
 
-            // Set static custom title explicitly
-            document.getElementById('repo-title').textContent = "Daily Targets";
-
             const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents`;
 
             fetch(apiUrl)
@@ -258,14 +255,13 @@
                     return response.json();
                 })
                 .then(data => {
-                    // 1. Filter for HTML files, excluding index.html itself
                     const htmlFiles = data.filter(file => 
                         file.type === 'file' && 
                         file.name.endsWith('.html') && 
                         file.name.toLowerCase() !== 'index.html'
                     );
 
-                    // 2. FIXED SORTING LOGIC: Natural numeric reverse sorting (e.g., target-10 appears above target-2)
+                    // Sorting Logic: Natural numeric reverse sorting
                     htmlFiles.sort((a, b) => b.name.localeCompare(a.name, undefined, { numeric: true, sensitivity: 'base' }));
 
                     if (htmlFiles.length === 0) {
