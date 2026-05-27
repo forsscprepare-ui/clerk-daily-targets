@@ -3,243 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Targets - Clerk Mains</title>
+    <title>Repository Pages Index</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --primary: #6366f1;
-            --accent: #22c55e;
-            --text: #f8fafc;
+            --primary-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
         }
 
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 2rem 1rem;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
         }
 
-        /* Navigation Header */
-        .nav-header {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            margin-bottom: 40px;
-            padding: 10px 0;
-        }
-
-        .back-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-
-        .back-btn {
-            position: absolute;
-            left: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(-3px);
-        }
-
-        .title-group {
-            width: 100%;
-            text-align: center;
-        }
-
-        /* Loading Spinner */
-        #loader {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-left-color: var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 50px auto;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        #target-container {
+        .container {
             width: 100%;
             max-width: 600px;
         }
 
-        .target-card {
+        header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        p {
+            color: #64748b;
+            margin: 0;
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 2rem;
             background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .error {
+            color: #dc2626;
+            border-color: #fca5a5;
+            background: #fef2f2;
+        }
+
+        .links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
-        .target-card:hover {
-            transform: translateY(-3px);
-            background: #2d3748;
-            border-color: var(--primary);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        .links-list li {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .date-info h3 { margin: 0; font-size: 1.2rem; text-transform: capitalize; }
-        .date-info p { margin: 5px 0 0; color: #94a3b8; font-size: 0.85rem; }
-
-        .new-badge {
-            background: var(--accent);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
-            animation: pulse 1.5s infinite;
+        .links-list li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
+        .links-list a {
+            display: block;
+            padding: 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
         }
 
-        #load-more {
-            background: rgba(255,255,255,0.05);
-            color: var(--text);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px 25px;
-            border-radius: 10px;
-            cursor: pointer;
-            margin: 20px 0;
-            display: none;
-            transition: background 0.2s;
-        }
-
-        #load-more:hover { background: rgba(255,255,255,0.1); }
-
-        @media (max-width: 600px) {
-            .back-btn span { display: none; } /* Hide text on very small screens */
-            .back-btn { padding: 8px 12px; }
+        .links-list a:hover {
+            color: var(--primary-color);
         }
     </style>
 </head>
 <body>
 
-    <div class="nav-header">
-        <a href="https://officialappaarav-spec.github.io/Banking-Mains/" class="back-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-            <span>Back</span>
-        </a>
-        <div class="title-group">
-            <h1 style="font-size: 2rem; margin: 0;">Daily Targets</h1>
-            <p style="color: #94a3b8; margin: 5px 0 0;">Clerk Mains Practice</p>
-        </div>
+    <div class="container">
+        <header>
+            <h1 id="repo-title">Available Pages</h1>
+            <p>Select a file below to open it</p>
+        </header>
+
+        <main id="content">
+            <div class="loading" id="status-message">Loading files from repository...</div>
+            <ul class="links-list" id="files-container" style="display: none;"></ul>
+        </main>
     </div>
 
-    <div id="loader"></div>
-    <div id="target-container"></div>
-    <button id="load-more">Show Older Targets</button>
-
     <script>
-        let checkDate = new Date(); 
-        let loadedCount = 0;
-        const batchSize = 7;
-        const container = document.getElementById('target-container');
-        const loader = document.getElementById('loader');
-        const loadMoreBtn = document.getElementById('load-more');
-        
-        let clickedItems = JSON.parse(localStorage.getItem('clerk_clicked_targets')) || [];
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. AUTOMATICALLY DETECT REPO DETAILS FROM URL
+            // Works for: https://username.github.io/repo-name/
+            const hostname = window.location.hostname;
+            const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
+            
+            let username = hostname.split('.')[0];
+            let repoName = pathSegments[0];
 
-        function formatDate(date) {
-            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            return `${date.getDate()}-${months[date.getMonth()]}-${date.getFullYear()}`;
-        }
-
-        async function fileExists(url) {
-            try {
-                const response = await fetch(url, { method: 'HEAD' });
-                return response.ok;
-            } catch (e) {
-                return false;
-            }
-        }
-
-        async function loadBatch() {
-            loader.style.display = 'block';
-            loadMoreBtn.style.display = 'none';
-            let foundInThisBatch = 0;
-            let attempts = 0;
-            const maxAttempts = 30; 
-
-            while (foundInThisBatch < batchSize && attempts < maxAttempts) {
-                let dateStr = formatDate(checkDate);
-                let fileName = `${dateStr}.html`;
-
-                if (await fileExists(fileName)) {
-                    createCard(dateStr, fileName);
-                    foundInThisBatch++;
-                    attempts = 0; 
-                } else {
-                    attempts++;
-                }
-                checkDate.setDate(checkDate.getDate() - 1);
+            // Fallback config if testing locally (Replace these with your actual details for local testing)
+            if (hostname === '127.0.0.1' || hostname === 'localhost') {
+                username = 'forsscprepare-ui'; 
+                repoName = 'clerk-daily-targets';       
             }
 
-            loader.style.display = 'none';
-            if (foundInThisBatch === batchSize) {
-                loadMoreBtn.style.display = 'block';
+            if (!username || !repoName || username === 'forsscprepare-ui') {
+                showError("Could not automatically detect GitHub repository details. If testing locally, please edit the script fallback variables.");
+                return;
             }
+
+            document.getElementById('repo-title').textContent = `${repoName.replace(/-/g, ' ')} Pages`;
+
+            // 2. FETCH FILES FROM GITHUB API
+            const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`GitHub API responded with status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Filter for HTML files, excluding index.html itself
+                    const htmlFiles = data.filter(file => 
+                        file.type === 'file' && 
+                        file.name.endsWith('.html') && 
+                        file.name.toLowerCase() !== 'index.html'
+                    );
+
+                    if (htmlFiles.length === 0) {
+                        showError("No other HTML files found in the root of this repository.");
+                        return;
+                    }
+
+                    renderLinks(htmlFiles);
+                })
+                .catch(error => {
+                    console.error('Error fetching repo contents:', error);
+                    showError("Failed to load files. Check if the repository is public or if the API rate limit is reached.");
+                });
+        });
+
+        function renderLinks(files) {
+            const container = document.getElementById('files-container');
+            const statusMessage = document.getElementById('status-message');
+            
+            files.forEach(file => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                
+                // Use relative path so it loads correctly within GitHub Pages
+                a.href = file.path; 
+                
+                // Clean up the display name (e.g., "quiz-page.html" -> "Quiz Page")
+                const displayName = file.name
+                    .replace('.html', '')
+                    .replace(/[-_]/g, ' ');
+                
+                a.textContent = displayName;
+                a.style.textTransform = 'capitalize';
+                
+                li.appendChild(a);
+                container.appendChild(li);
+            });
+
+            statusMessage.style.display = 'none';
+            container.style.display = 'flex';
         }
 
-        function createCard(dateStr, fileName) {
-            const isNew = !clickedItems.includes(dateStr);
-            const card = document.createElement('div');
-            card.className = 'target-card';
-            card.innerHTML = `
-                <div class="date-info">
-                    <h3>${dateStr.replace(/-/g, ' ')}</h3>
-                    <p>Mains Level Mock Test • Clerk</p>
-                </div>
-                ${isNew ? `<div class="new-badge" id="badge-${dateStr}">NEW</div>` : ''}
-            `;
-
-            card.onclick = () => {
-                if (!clickedItems.includes(dateStr)) {
-                    clickedItems.push(dateStr);
-                    localStorage.setItem('clerk_clicked_targets', JSON.stringify(clickedItems));
-                }
-                window.location.href = fileName;
-            };
-
-            container.appendChild(card);
+        function showError(message) {
+            const statusMessage = document.getElementById('status-message');
+            statusMessage.className = 'error';
+            statusMessage.textContent = message;
         }
-
-        loadBatch();
-        loadMoreBtn.onclick = loadBatch;
     </script>
 </body>
 </html>
