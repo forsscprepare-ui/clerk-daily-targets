@@ -49,6 +49,32 @@
             padding-top: 1rem;
         }
 
+        /* Top Left Back Button Alignment Fix */
+        .back--btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--container-bg);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .back--btn:hover {
+            border-color: var(--primary-accent);
+            background-color: var(--card-hover-bg);
+            color: var(--primary-accent);
+        }
+
         /* Top Right Theme Button Adjustment */
         .theme-toggle-btn {
             position: absolute;
@@ -155,7 +181,7 @@
         </button>
 
         <header>
-            <h1 id="repo-title">Available Pages</h1>
+            <h1 id="repo-title">Daily Targets</h1>
             <p>Select a file below to open it</p>
         </header>
 
@@ -219,7 +245,8 @@
                 return;
             }
 
-           document.getElementById('repo-title').textContent = "Daily Targets";
+            // Set static custom title explicitly
+            document.getElementById('repo-title').textContent = "Daily Targets";
 
             const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents`;
 
