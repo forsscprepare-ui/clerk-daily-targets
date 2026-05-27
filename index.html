@@ -231,19 +231,23 @@
                     return response.json();
                 })
                 .then(data => {
-                    const htmlFiles = data.filter(file => 
-                        file.type === 'file' && 
-                        file.name.endsWith('.html') && 
-                        file.name.toLowerCase() !== 'index.html'
-                    );
+    // 1. Filter for HTML files, excluding index.html itself
+    const htmlFiles = data.filter(file => 
+        file.type === 'file' && 
+        file.name.endsWith('.html') && 
+        file.name.toLowerCase() !== 'index.html'
+    );
 
-                    if (htmlFiles.length === 0) {
-                        showError("No other HTML files found in the root of this repository.");
-                        return;
-                    }
+    // 2. SORTING LOGIC: Sort files in reverse order (Newest/Highest sequence at the top)
+    htmlFiles.sort((a, b) => b.name.localeCompare(a.name));
 
-                    renderLinks(htmlFiles);
-                })
+    if (htmlFiles.length === 0) {
+        showError("No other HTML files found in the root of this repository.");
+        return;
+    }
+
+    renderLinks(htmlFiles);
+})
                 .catch(error => {
                     console.error('Error fetching repo contents:', error);
                     showError("Failed to load files. Check if the repository is public or if the API rate limit is reached.");
