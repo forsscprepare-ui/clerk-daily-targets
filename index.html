@@ -113,21 +113,26 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // 1. AUTOMATICALLY DETECT REPO DETAILS FROM URL
-            // Works for: https://username.github.io/repo-name/
             const hostname = window.location.hostname;
             const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
             
-            let username = hostname.split('.')[0];
-            let repoName = pathSegments[0];
+            let username = '';
+            let repoName = '';
 
-            // Fallback config if testing locally (Replace these with your actual details for local testing)
-            if (hostname === '127.0.0.1' || hostname === 'localhost') {
+            // Check if running on GitHub Pages
+            if (hostname.endsWith('.github.io')) {
+                username = hostname.split('.')[0];
+                repoName = pathSegments[0];
+            } 
+            // Fallback config if testing locally via Live Server or localhost
+            else if (hostname === '127.0.0.1' || hostname === 'localhost') {
                 username = 'forsscprepare-ui'; 
                 repoName = 'clerk-daily-targets';       
             }
 
-            if (!username || !repoName || username === 'forsscprepare-ui') {
-                showError("Could not automatically detect GitHub repository details. If testing locally, please edit the script fallback variables.");
+            // Validation check logic fixed
+            if (!username || !repoName) {
+                showError("Could not automatically detect GitHub repository details. If testing locally, please ensure the localhost URL config is correct.");
                 return;
             }
 
@@ -172,10 +177,10 @@
                 const li = document.createElement('li');
                 const a = document.createElement('a');
                 
-                // Use relative path so it loads correctly within GitHub Pages
-                a.href = file.path; 
+                // Relative path links work correctly on both localhost setups and deployed pages
+                a.href = file.name; 
                 
-                // Clean up the display name (e.g., "quiz-page.html" -> "Quiz Page")
+                // Format clean names for UI
                 const displayName = file.name
                     .replace('.html', '')
                     .replace(/[-_]/g, ' ');
